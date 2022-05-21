@@ -1,0 +1,118 @@
+<section id="hero">
+  <section id="features" class="features">
+    <div class="container" data-aos="fade-up">
+      <div class="row">
+        <header class="section-header">
+          <p>Начало работы</p>
+        </header>
+        <div class="col-lg-6 feture-tabs">
+          <h3>1. Добавьте следующие библиотеки в ваш проект</h3>
+        </div>
+        <div class="col-lg-6 mt-5 mt-lg-0 d-flex">
+          <div class="row align-self-center gy-4">
+            <div class="col-md-12">
+              <div class="feature-box d-flex align-items-center">
+                <i class="bi bi-check"></i>
+                <h3><a target="_blank" rel="noopener noreferrer" href="https://pub.dev/packages/retrofit_generator">retrofit_generator</a>
+                </h3>
+              </div>
+            </div>
+            <div class="col-md-12">
+              <div class="feature-box d-flex align-items-center">
+                <i class="bi bi-check"></i>
+                <h3><a target="_blank" rel="noopener noreferrer" href="https://pub.dev/packages/retrofit">retrofit</a>
+                </h3>
+              </div>
+            </div>
+            <div class="col-md-12">
+              <div class="feature-box d-flex align-items-center">
+                <i class="bi bi-check"></i>
+                <h3><a target="_blank" rel="noopener noreferrer" href="https://pub.dev/packages/json_annotation">json_annotation</a>
+                </h3>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section id="contact" class="contact features">
+    <div class="container" data-aos="fade-up">
+      <div class="row">
+        <div class="col-lg-6">
+          <form method="get" class="php-email-form" (change)="checkButtonDisable()">
+            <div class="row gy-4">
+              <div class="col-md-12">
+                <input type="text" class="form-control" (click)="updateUrl()" [(ngModel)]="url" name="url"
+                       placeholder="Ссылка на Swagger-схему">
+              </div>
+              <div class="col-md-12">
+                <h2 style="text-align: center">или</h2>
+              </div>
+              <div class="col-md-12">
+                <input type="file" #f (change)="onFileSelected($event)" class="form-control" id="file" name="file"
+                       placeholder="Файл">
+              </div>
+              <div class="col-md-12 text-center">
+                <div class="loading">Loading</div>
+                <div class="error-message"></div>
+                <div class="sent-message">Схема загружена</div>
+                <button type="button" (click)="getSwaggerSchema()" [disabled]="buttonDisabled">Загрузить схему</button>
+              </div>
+            </div>
+          </form>
+        </div>
+        <div class="col-lg-6 feture-tabs">
+          <h3>2. Вставьте ссылку на Swagger-схему или загрузите json-файл</h3>
+        </div>
+      </div>
+    </div>
+  </section>
+</section>
+<section id="schema" class="faq" [hidden]="hidden">
+  <div class="container" data-aos="fade-up">
+    <header class="section-header">
+      <p>Выберите эндпоинты для генерации</p>
+    </header>
+    <div class="row">
+      <div class="col-lg-12">
+        <mat-accordion *ngFor="let tag of tags | keyvalue">
+          <mat-expansion-panel [expanded]="tagsExpanded.get(tag.key)" (opened)="changeExpanded(true, tag.key)"
+                               (closed)="changeExpanded(false, tag.key)">
+            <mat-expansion-panel-header>
+              <mat-panel-title>
+                <span class="example-list-section">
+                     <mat-checkbox color="primary" [checked]="tagsActivity.get(tag.key)"
+                                   (change)="setAll($event.checked, tag.key)" style="font-weight: bold">
+                        {{tag.key}}
+                     </mat-checkbox>
+                  </span>
+              </mat-panel-title>
+            </mat-expansion-panel-header>
+            <span class="example-list-section">
+                                 <ul *ngFor="let endpoint of tag.value">
+                                   <div [style.background]=endpoint.colorTransparent [style.border-color]=endpoint.color class="endpoint">
+                                    <li>
+                                       <mat-checkbox color="accent" [checked]="endpoint.checked"
+                                                     (change)="checkTag($event.checked, tag.key, endpoint.path, endpoint.operation)">
+                                         <div class="row" style="padding-left: 20px">
+                                           <div class="operation"
+                                                [style.background]=endpoint.color>{{endpoint.operation}}</div>
+                                           <div class="path">{{endpoint.path}}</div>
+                                           <div class="description">{{endpoint.description}}</div>
+                                         </div>
+                                       </mat-checkbox>
+                                    </li>
+                                     </div>
+                                 </ul>
+                              </span>
+          </mat-expansion-panel>
+        </mat-accordion>
+        <div style="text-align: center; padding-top: 40px">
+          <button type="button" (click)="sendSchema()">Сгенерировать клиенты</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- End F.A.Q Section -->
